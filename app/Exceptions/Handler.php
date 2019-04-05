@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use \Illuminate\Http\Response;
+use \Illuminate\Session\TokenMismatchException;
 
 class Handler extends ExceptionHandler
 {
@@ -46,6 +48,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        /* hijack the handler to output a more reasonable (and digestible) JSON error */
+        if ($exception instanceof TokenMismatchException && $request->ajax()) {
+            return new Response(['Error' => 'Invalid session encountered.']);
+        }
+
         return parent::render($request, $exception);
     }
 }
