@@ -19,7 +19,8 @@
 ## Database Installation
 
 * Update the .env file with your database connection information
-* Perform database migrations
+* Update config/database.php with your database connection information
+* Perform database migrations `php artisan migrate`
 * Seed database
 
 _Note_: Redis data will cache during operation - if this were 
@@ -29,4 +30,5 @@ _Note_: Redis data will cache during operation - if this were
 
 * Redis - most modern web applications utilize data caching in some way. I wanted to demonstrate: a) I am aware of this, b) I can manage this.
 * PostgreSQL - chosen because it is generally considered more robust, compliant, and ????
-* Vue.js - 
+* Vue.js - A simple application, but wanted to learn something I didn't have experience with!
+* Did not secure the endpoints.  In an actual API implementation, you likely want something like oAuth, or at least a
