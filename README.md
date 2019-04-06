@@ -5,6 +5,7 @@
 * Node.js
 * Redis
 * PostgreSQL
+* PHP 7.1+
 
 ## Application Installation
 
@@ -14,7 +15,8 @@
 * Install more dependencies `npm install`
 * Generate the application key:  `php artisan key:generate`
 * Compile: `npm run production`
-* Test to ensure everything is running: `php artisan serve`
+* Run all Unit Tests to ensure everything is wired up properly `vendor/bin/phpunit`
+* Fire up the server `php artisan serve`
 
 ## Database Installation
 
@@ -25,6 +27,16 @@
 
 _Note_: Redis data will cache during operation - if this were 
 
+## Approach
+
+* Utilized Test Driven Development (TDD) approach:
+    * "Red - Green - Refactor": Write test that fails (red), implement enough code to pass (green), once test is passing, you can safely refactor knowing your test will alert you to any logic errors you've introduced.
+* Commit early and often; commit files separately with meaningful description. Some of my all time favorite useless commit messages:
+    * "doing the needful"
+    * "this better f***ing work"
+    * "sixth attempt to fix, OMFG!"
+    
+* Have fun, step out of your comfort zone and learn something!
 
 ## Design Decisions
 
@@ -32,3 +44,7 @@ _Note_: Redis data will cache during operation - if this were
 * PostgreSQL - chosen because it is generally considered more robust, compliant, and ????
 * Vue.js - A simple application, but wanted to learn something I didn't have experience with!
 * Did not secure the endpoints.  In an actual API implementation, you likely want something like oAuth, or at least a
+* Did not secure Redis - ?
+* Under normal circumstances, the .env and config/database.php files would have been cleansed of user/password data.
+* I used a literal interpretation of your requirements and constrained `orders` by enforcing a unique email address per order.
+* Initially, I added authentication (as you can see from the commit history), then decided against it because it added too much clutter to the project.
