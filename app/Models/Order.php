@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Models\ModelWithValidation;
+use App\Models\OrderItem;
 
 class Order extends ModelWithValidation
 {
@@ -21,11 +22,13 @@ class Order extends ModelWithValidation
             $obj = new self();
         }
 
-//        if (isset($vals->order_items)) {
-//            foreach ($vals->order_items as $line) {
-//
-//            }
-//        }
+        if (isset($data['order_items'])) {
+            $i = 0;
+            foreach ($data['order_items'] as $line) {
+                $orderItem = OrderItem::toObject($line, new OrderItem());
+                $obj->order_items[$i++] = $orderItem;
+            }
+        }
 
         return parent::toObject($data, $obj);
     }
