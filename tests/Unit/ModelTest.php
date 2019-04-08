@@ -144,8 +144,6 @@ class ModelTest extends TestCase
 
         $ret = Order::toObject($arry);
 
-        //$ret->order_items[0]->order_id=6;
-
         $good = $this->isObjectSameAsArray($ret, $arry);
 
         /* ensure each order line was converted properly */
