@@ -157,6 +157,47 @@ class ModelTest extends TestCase
         $this->assertTrue($good);
     }
 
+    public function testOrderWithMultipleLineItemsToObjectCreatesValidOrderAndOrderItemObjects()
+    {
+        $arry = [
+            'first_name' => 'Jesse',
+            'last_name' => 'Quijano',
+            'email' => 'jesse@quijano.net',
+            'garbage' => 'as;dlfkjas',
+            'order_items' => [
+                [
+                    'order_id' => 1,
+                    'line_number' => 1,
+                    'name' => 'garlic toast',
+                    'quantity' => 123,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'garbage' => 'adsdadfs'
+                ],
+                [
+                    'order_id' => 1,
+                    'line_number' => 2,
+                    'name' => 'spaghetti',
+                    'quantity' => 10,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]
+            ]
+        ];
+
+        $ret = Order::toObject($arry);
+
+        $good = $this->isObjectSameAsArray($ret, $arry);
+
+        /* ensure each order line was converted properly */
+        $i = 0;
+        foreach ($ret->order_items as $line) {
+            if (!$good = $this->isObjectSameAsArray($line, $arry['order_items'][$i++])) {
+                break;
+            }
+        }
+
+        $this->assertTrue($good);
+    }
+
     public function testOrderWithLineItemsToObjectFailsOnBadOrderItem()
     {
         $arry = [
@@ -182,7 +223,7 @@ class ModelTest extends TestCase
 
         $good = $this->isObjectSameAsArray($ret, $arry);
 
-        /* ensure each order line was converted properly */
+        // TODO: this is redundant, move to private method
         $i = 0;
         foreach ($ret->order_items as $line) {
             if (!$good = $this->isObjectSameAsArray($line, $arry['order_items'][$i++])) {
