@@ -3,43 +3,65 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use mysql_xdevapi\Exception;
+use App\Models\Order;
 
 class ApiController extends BaseController
 {
-    public function saveOrder(string $orderData) : string
+    /**
+     * POST endpoint to save an order. It expects to receive a JSON order object.
+     * @param Request $request
+     * @return string
+     */
+    public function saveOrder(Request $request) : string
     {
+        $orderData = $request->input();
 
-        // attempt to convert to object, then validate
+        if (empty($orderData) || !is_array($orderData)) {
+            return json_encode(['Error' => 'Invalid order data.']);
+        }
+
+        /* attempt to convert to object, then validate */
         try {
-            $order = json_decode($orderData);
-            if (!$this->validateOrder($order)) {
-                throw new \Exception('Order failed validation.');  //determine how you want to bubble up error, and add to output
+            $order = Order::toObject($orderData);
+            if (!$order->validate($orderData)) {
+                throw new \Exception("Validation failed:" . $order->errors[0]);  //pick first error (TODO: expand to include ALL)
             }
         } catch (\Exception $ex)
         {
             // log
 
             // output error
-
-            exit();
+            return json_encode(['Error' => $ex->getMessage()]);
         }
 
-        if (!empty($order->Id))
+        /* in case they are trying to update via POST */
+        if (!empty($order->id))
         {
-            return $this->updateOrder();
+            return $this->updateOrder($request);
         }
 
-        return '';  // create standardized response object, then return
+        try {
+            $order->save();
+
+            /* now handle line items */
+            foreach ($order->order_items as $line) {
+                $line->order_id = $order->id; // ensure lines get the new order id we just created
+                $line->save();
+            }
+        } catch (\Exception $ex) {
+            return json_encode(['Error' => $ex->getMessage()]);
+        }
+
+        /* cache order in the orders 'folder' for 10 minutes (longer in prod environment) */
+        Cache::store('redis')->tags(['orders'])->put($order->id, json_encode($order), 600);
+
+        return json_encode(['Success' => true, 'data' => json_encode($order)]);
     }
 
-    public function updateOrder() : string
+    public function updateOrder(Request $request) : string
     {
         // persist
 
@@ -51,6 +73,7 @@ class ApiController extends BaseController
     public function getOrder(int $orderId) : string
     {
         // check cache and return
+
 
         //
     }
@@ -64,10 +87,12 @@ class ApiController extends BaseController
         return ''; // create standardized response object, then return
     }
 
-    private function validateOrder($order) : bool
+    /**
+     * Added this for testing with Postman - need to pass/spoof the CSRF key
+     * @return string
+     */
+    public function getCSRF()
     {
-        $valid = false;
-
-        return $valid;
+        return Session::token();
     }
 }
