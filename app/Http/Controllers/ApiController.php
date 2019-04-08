@@ -93,7 +93,7 @@ class ApiController extends BaseController
 
         /* not in cache, let's load */
         if (!$order) {
-            $order = Order::find($orderId);
+            $order = Order::with('order_items')->find($orderId);
             if ($order != null) {
                 /* found it, cache it! */
                 Cache::store('redis')->put($orderId, json_encode($order));
