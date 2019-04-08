@@ -2,8 +2,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithValidation;
 
-class OrderItem extends Model
+class OrderItem extends ModelWithValidation
 {
     protected $table = 'order_item';
     public $timestamps = false;
@@ -11,6 +12,6 @@ class OrderItem extends Model
 
     public function order()
     {
-        $this->hasOne('App\Models\Order', 'id', 'order_id');
+        return $this->hasOne('App\Models\Order', 'id', 'order_id');
     }
 }
