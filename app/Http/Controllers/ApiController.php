@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\DB;
 class ApiController extends BaseController
 {
     /**
-     * POST endpoint to save an order. It expects to receive a JSON order object.
+     * POST endpoint to save an order. It expects to receive a JSON order object, and returns JSON with status of
+     * request and order object on Success.
      * @param Request $request
      * @return string
      */
@@ -79,6 +80,8 @@ class ApiController extends BaseController
     }
 
     /**
+     * GET endpoint to retrieve Order with line items. Expects integer to be passed in, i.e. /api/1.0/order/125 and
+     * returns JSON with status and order object on Success.
      * @param int $orderId
      * @return string
      */
@@ -119,7 +122,7 @@ class ApiController extends BaseController
     }
 
     /**
-     * Added this for testing with Postman - need to pass/spoof the CSRF key
+     * Added this for testing with Postman - need to pass/spoof the CSRF key. See routes/api.php for more info
      * @return string
      */
     public function getCSRF()
