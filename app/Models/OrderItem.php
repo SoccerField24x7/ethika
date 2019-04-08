@@ -9,6 +9,12 @@ class OrderItem extends ModelWithValidation
     protected $table = 'order_item';
     public $timestamps = false;
     protected $guarded = ['id'];
+    protected $rules = [
+        'order_id' => 'required',
+        'line_number' => 'required',
+        'name' => 'required',
+        'quantity' => 'required'
+    ];
 
     public function order()
     {
