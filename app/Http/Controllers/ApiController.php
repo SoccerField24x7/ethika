@@ -27,7 +27,7 @@ class ApiController extends BaseController
         try {
             $order = Order::toObject($orderData);
             if (!$order->validate($orderData)) {
-                throw new \Exception("Validation failed:" . $order->errors[0]);  //pick first error (TODO: expand to include ALL)
+                throw new \Exception("Validation failed:" . $order->errors()[0]);  //pick first error (TODO: expand to include ALL)
             }
         } catch (\Exception $ex)
         {
