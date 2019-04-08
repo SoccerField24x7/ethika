@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 
 class ModelWithValidation extends Model
