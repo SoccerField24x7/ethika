@@ -34,7 +34,36 @@ class ModelTest extends TestCase
 
     public function testOrderToModelCreatesValidOrderObject()
     {
-        $this->markTestSkipped('TDD: Coming soon');
+        $good = false;
+
+        $arry = [
+            'first_name' => 'Jesse',
+            'last_name' => 'Quijano',
+            'email' => 'jesse@quijano.net',
+            'garbage' => 'as;dlfkjas' // this must be excluded from the test
+        ];
+
+        $ret = Order::toObject($arry);
+
+        /* rather than doing this as part of the foreach, doing here so I can properly set $good - don't want to set it
+            to true and have there be no columns in the table */
+        $cols = $ret->getTableColumns();
+        if (count($cols)) {
+            $good = true; // so I can easily target false in the foreach
+        }
+
+        /* have to test object because array can contain elements not in the object */
+        foreach ($ret as $key => $value) {
+            if (!isset($arry[$key])) {
+                continue;
+            }
+
+            if ($ret->{$key} != $arry[$key]) {
+                $good = false;
+            }
+        }
+
+        $this->assertTrue($good);
     }
 
     public function testOrderItemToModelCreatesValidOrderItemObject()
