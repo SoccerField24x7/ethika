@@ -34,8 +34,6 @@ class ModelTest extends TestCase
 
     public function testOrderToModelCreatesValidOrderObject()
     {
-        $good = false;
-
         $arry = [
             'first_name' => 'Jesse',
             'last_name' => 'Quijano',
@@ -45,62 +43,118 @@ class ModelTest extends TestCase
 
         $ret = Order::toObject($arry);
 
-        /* rather than doing this as part of the foreach, doing here so I can properly set $good - don't want to set it
-            to true and have there be no columns in the table */
-        $cols = $ret->getTableColumns();
-        if (count($cols)) {
-            $good = true; // so I can easily target false in the upcoming foreach
-        }
-
-        /* have to test object because array can contain elements not in the object */
-        foreach ($ret as $key => $value) {
-            if (!isset($arry[$key])) {
-                continue;
-            }
-
-            if ($ret->{$key} != $arry[$key]) {
-                $good = false;
-            }
-        }
-
-        $this->assertTrue($good);
+        $this->assertTrue($this->isObjectSameAsArray($ret, $arry));
     }
 
     public function testOrderItemToModelCreatesValidOrderItemObject()
     {
-        $good = false;
-
         $arry = [
             'order_id' => 1,
             'line_number' => 1,
             'name' => 'garlic toast',
             'quantity' => 123,
-            'created_at' => date('Y-m-d H:i:s')
+            'created_at' => date('Y-m-d H:i:s'),
+            'garbage' => 'adsdadfs'
         ];
 
         $ret = OrderItem::toObject($arry, new OrderItem());
 
-        $cols = $ret->getTableColumns();
-        if (count($cols)) {
-            $good = true; // so I can easily target false in the upcoming foreach
-        }
+        $this->assertTrue($this->isObjectSameAsArray($ret, $arry));
+    }
 
-        /* have to test object because array can contain elements not in the object */
-        foreach ($ret as $key => $value) {
-            if (!isset($arry[$key])) {
-                continue;
-            }
+    public function testOrderWithLineItemsToObjectCreatesValidOrderAndOrderItemObjects()
+    {
+        $arry = [
+            'first_name' => 'Jesse',
+            'last_name' => 'Quijano',
+            'email' => 'jesse@quijano.net',
+            'garbage' => 'as;dlfkjas',
+            'order_items' => [
+                [
+                    'order_id' => 1,
+                    'line_number' => 1,
+                    'name' => 'garlic toast',
+                    'quantity' => 123,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'garbage' => 'adsdadfs'
+                ]
+            ]
+        ];
 
-            if ($ret->{$key} != $arry[$key]) {
-                $good = false;
+        $ret = Order::toObject($arry);
+
+        //$ret->order_items[0]->order_id=6;
+
+        $good = $this->isObjectSameAsArray($ret, $arry);
+
+        /* ensure each order line was converted properly */
+        $i = 0;
+        foreach ($ret->order_items as $line) {
+            if (!$good = $this->isObjectSameAsArray($line, $arry['order_items'][$i++])) {
+                break;
             }
         }
 
         $this->assertTrue($good);
     }
 
-    public function testOrderWithLineItemsToObjectCreatesValidOrderAndOrderItemObjects()
+    public function testOrderWithLineItemsToObjectFailsOnBadOrderItem()
     {
-        $this->markTestSkipped('TDD: Coming soon');
+        $arry = [
+            'first_name' => 'Jesse',
+            'last_name' => 'Quijano',
+            'email' => 'jesse@quijano.net',
+            'garbage' => 'as;dlfkjas',
+            'order_items' => [
+                [
+                    'order_id' => 1,
+                    'line_number' => 1,
+                    'name' => 'garlic toast',
+                    'quantity' => 123,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'garbage' => 'adsdadfs'
+                ]
+            ]
+        ];
+
+        $ret = Order::toObject($arry);
+
+        $ret->order_items[0]->order_id=6;
+
+        $good = $this->isObjectSameAsArray($ret, $arry);
+
+        /* ensure each order line was converted properly */
+        $i = 0;
+        foreach ($ret->order_items as $line) {
+            if (!$good = $this->isObjectSameAsArray($line, $arry['order_items'][$i++])) {
+                break;
+            }
+        }
+
+        $this->assertFalse($good);
+    }
+
+    private function isObjectSameAsArray($obj, $arry) : bool
+    {
+        $same = false;
+
+        $cols = $obj->getTableColumns();
+
+        if (count($cols)) {
+            $same = true; // so I can easily target false in the upcoming foreach
+        }
+
+        /* have to test object because array can contain elements not in the object */
+        foreach ($cols as $col) {
+            if (!isset($arry[$col])) {
+                continue;
+            }
+
+            if ($obj->{$col} != $arry[$col]) {
+                $same = false;
+            }
+        }
+
+        return $same;
     }
 }
