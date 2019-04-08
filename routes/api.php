@@ -24,4 +24,5 @@ Route::middleware('web')->prefix('1.0')->group(function() {
     Route::put('/order-update', 'ApiController@updateOrder');
     Route::get('/order/{id}', 'ApiController@getOrder');
     Route::delete('/order-delete/{id}', 'ApiController@deleteOrder');
+    Route::get('get-csrf', 'ApiController@getCSRF');
 });
