@@ -4,64 +4,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Ethika Code Challenge</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
+        <link href="css/main.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <div class="flex-center position-ref full-height">
@@ -85,12 +32,12 @@
                 </div>
 
                 <div class="links">
-                    <a href="#">New Order</a>
-                    <a href="#">Search Orders</a>
-                    <a href="#">LinkedIn</a>
-                    <a href="#">GitHub</a>
-                    <a href="#">Stack Overflow</a>
-                    <a href="#">Exercism.io</a>
+                    <a href="/order">New Order</a>
+                    <a href="/search">Search Orders</a>
+                    <a href="https://www.linkedin.com/in/jesse-quijano/">LinkedIn</a>
+                    <a href="https://github.com/SoccerField24x7">GitHub</a>
+                    <a href="https://stackoverflow.com/users/1732853/jesse-q">Stack Overflow</a>
+                    <a href="https://exercism.io/profiles/CodeNja">Exercism.io</a>
                 </div>
             </div>
         </div>
