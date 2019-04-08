@@ -49,7 +49,7 @@ class ModelTest extends TestCase
             to true and have there be no columns in the table */
         $cols = $ret->getTableColumns();
         if (count($cols)) {
-            $good = true; // so I can easily target false in the foreach
+            $good = true; // so I can easily target false in the upcoming foreach
         }
 
         /* have to test object because array can contain elements not in the object */
@@ -68,7 +68,35 @@ class ModelTest extends TestCase
 
     public function testOrderItemToModelCreatesValidOrderItemObject()
     {
-        $this->markTestSkipped('TDD: Coming soon');
+        $good = false;
+
+        $arry = [
+            'order_id' => 1,
+            'line_number' => 1,
+            'name' => 'garlic toast',
+            'quantity' => 123,
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+
+        $ret = OrderItem::toObject($arry, new OrderItem());
+
+        $cols = $ret->getTableColumns();
+        if (count($cols)) {
+            $good = true; // so I can easily target false in the upcoming foreach
+        }
+
+        /* have to test object because array can contain elements not in the object */
+        foreach ($ret as $key => $value) {
+            if (!isset($arry[$key])) {
+                continue;
+            }
+
+            if ($ret->{$key} != $arry[$key]) {
+                $good = false;
+            }
+        }
+
+        $this->assertTrue($good);
     }
 
     public function testOrderWithLineItemsToObjectCreatesValidOrderAndOrderItemObjects()
