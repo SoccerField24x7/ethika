@@ -27,9 +27,34 @@ class ModelTest extends TestCase
         $this->assertTrue($good);
     }
 
-    public function testValidatorSuccess()
+    public function testValidatorOnOrderSuccess()
     {
-        $this->markTestSkipped('TDD: Coming soon');
+        $arry = [
+            'first_name' => 'Jesse',
+            'last_name' => 'Quijano',
+            'email' => uniqid() . '@quijano.net',
+        ];
+
+        $order = new Order();
+
+        $good = $order->validate($arry);
+
+        $this->assertTrue($good);
+    }
+
+    public function testValidationOnOrderFailsMissingLastName()
+    {
+        $arry = [
+            'first_name' => 'Jesse',
+            'last_name' => '',
+            'email' => 'jesse@quijano.net',
+        ];
+
+        $order = new Order();
+
+        $good = $order->validate($arry);
+
+        $this->assertFalse($good);
     }
 
     public function testOrderToModelCreatesValidOrderObject()
@@ -60,6 +85,42 @@ class ModelTest extends TestCase
         $ret = OrderItem::toObject($arry, new OrderItem());
 
         $this->assertTrue($this->isObjectSameAsArray($ret, $arry));
+    }
+
+    public function testValidationOnOrderItemSuccess()
+    {
+        $arry = [
+            'order_id' => 1,
+            'line_number' => 1,
+            'name' => 'garlic toast',
+            'quantity' => 123,
+            'created_at' => date('Y-m-d H:i:s'),
+            'garbage' => 'adsdadfs'
+        ];
+
+        $item = new OrderItem();
+
+        $good = $item->validate($arry);
+
+        $this->assertTrue($good);
+    }
+
+    public function testValidationOnOrderItemFailsMissingOrderId()
+    {
+        $arry = [
+            //'order_id' => 1,
+            'line_number' => 1,
+            'name' => 'garlic toast',
+            'quantity' => 123,
+            'created_at' => date('Y-m-d H:i:s'),
+            'garbage' => 'adsdadfs'
+        ];
+
+        $item = new OrderItem();
+
+        $good = $item->validate($arry);
+
+        $this->assertFalse($good);
     }
 
     public function testOrderWithLineItemsToObjectCreatesValidOrderAndOrderItemObjects()
