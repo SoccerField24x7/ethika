@@ -9,6 +9,11 @@ class Order extends ModelWithValidation
     protected $table = 'order';
     public $timestamps = false;
     protected $guarded = ['id'];
+    protected $rules = [
+        'last_name' => 'required|max:50',
+        'first_name' => 'max:50',
+        'email' => 'required|email|unique:order,email|max:50'
+    ];
 
     public function order_items()
     {
