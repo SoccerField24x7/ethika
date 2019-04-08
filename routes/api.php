@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-/* version 1.0 routes - allows for backward compatibility */
+/* version prefixing (1.0) the routes allows for backward compatibility and safe forward development */
 Route::middleware('web')->prefix('1.0')->group(function() {
     Route::post('/order-save', 'ApiController@saveOrder');
     Route::patch('/order-update', 'ApiController@updateOrder');
