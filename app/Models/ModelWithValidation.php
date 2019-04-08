@@ -8,14 +8,16 @@ class ModelWithValidation extends Model
 {
 
     protected $rules = [];
-    protected $errors;
+    protected $errors = [];
 
     public function validate($data) : bool
     {
         $v = Validator::make($data, $this->rules);
 
         if ($v->fails()) {
-            $this->errors = $v->errors();
+            foreach ($v->errors()->all() as $error) {
+                $this->errors[] = $error;
+            }
             return false;
         }
 
