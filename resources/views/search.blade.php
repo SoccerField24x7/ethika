@@ -55,8 +55,8 @@
                     <div class="row">
                         <div class="col-md-12 mb-2"><input class="form-control" type="text" name="first_name" id="first-name" placeholder="First Name" /></div>
                         <div class="col-md-12 mb-2"><input class="form-control" type="text" name="last_name" id="last-name" placeholder="Last Name" /></div>
-                        <div class="col-md-12 mb-2"><input class="form-control" type="text" name="email" id="email" placeholder="Email Address" /></div>
-                        <div class="col-md-12 mb-4"><input class="form-control" type="text" name="name" id="name" placeholder="Product Name" /></div>
+                        <div class="col-md-12 mb-4"><input class="form-control" type="text" name="email" id="email" placeholder="Email Address" /></div>
+                        <div class="col-md-12 mb-4"><input class="form-control" type="hidden" name="name" id="name" placeholder="Product Name" /></div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-12 text-right"><button class="btn btn-success" id="do-search">Search</button></div>
