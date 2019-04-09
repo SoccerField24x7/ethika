@@ -16,8 +16,9 @@
 * Generate the application key:  `php artisan key:generate`
 * Do the database install steps (below).
 * Compile: `npm run production`
-* Run all Unit Tests to ensure everything is wired up properly `vendor/bin/phpunit`
 * Fire up the server `php artisan serve`
+* Run all Unit Tests to ensure everything is wired up properly `vendor/bin/phpunit`
+* Check out my work: http://127.0.0.1:8000
 
 ## Database Installation
 
