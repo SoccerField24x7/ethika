@@ -71,7 +71,7 @@
 
             /* AJAX to API */
             $.ajax({
-                url: 'http://127.0.0.1:8000/api/1.0/order-save',
+                url: '/api/1.0/order-save',
                 data: JSON.stringify(header_dto),
                 headers: {
                     'X-CSRF-TOKEN': $('input[name=_token]').val(),
@@ -80,9 +80,7 @@
                 error: function(err) {
                     console.log(err);
                 },
-                //dataType: 'jsonp',
                 success: function(data) {
-                    console.log(data);
                     let obj = JSON.parse(data);
                     if (typeof obj.Error !== 'undefined') {
                         $('#err-message').addClass('alert-danger').html(obj.Error).show();
@@ -107,12 +105,10 @@
 
         function getToken() {
             $.ajax({
-                url: 'http://127.0.0.1:8000/api/1.0/get-csrf',
-                //data: header_dto,
+                url: '/api/1.0/get-csrf',
                 error: function(err) {
                     console.log(err);
                 },
-                //dataType: 'jsonp',
                 success: function(data) {
                     $('input[name=_token]').val(data);
                 },
