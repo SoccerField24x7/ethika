@@ -28,7 +28,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    <img src="{{ asset('images/ethika.png') }}" alt="Ethika logo" />
+                    <img src="{{ asset('images/ethika.png') }}" alt="Ethika logo" width="750" />
                 </div>
 
                 <div class="links">
