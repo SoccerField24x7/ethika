@@ -25,4 +25,5 @@ Route::middleware('web')->prefix('1.0')->group(function() {
     Route::get('/order/{id}', 'ApiController@getOrder');
     Route::delete('/order-delete/{id}', 'ApiController@deleteOrder');
     Route::get('get-csrf', 'ApiController@getCSRF');
+    Route::post('/order-search', 'ApiController@searchOrders');
 });
