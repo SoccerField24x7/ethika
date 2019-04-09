@@ -14,6 +14,7 @@
 * Install dependencies `composer install`
 * Install more dependencies `npm install`
 * Generate the application key:  `php artisan key:generate`
+* Do the database install steps (below).
 * Compile: `npm run production`
 * Run all Unit Tests to ensure everything is wired up properly `vendor/bin/phpunit`
 * Fire up the server `php artisan serve`
