@@ -42,7 +42,7 @@ _Note_: Redis data will cache during operation, but I randomly choose up to 100 
 * Redis - most modern web applications utilize data caching in some way. I wanted to demonstrate: a) I am aware of this, b) I can manage this.
 * PostgreSQL - chosen because it is generally considered more robust, compliant, and more readily supports transactions and foreign keys.
 * Vue.js - A simple application, but wanted to learn something I didn't have experience with!
-* Did not secure the endpoints.  In an actual API implementation, you likely want something like oAuth, or at least a
+* Did not secure the endpoints.  In an actual API implementation, you'd likely want something like oAuth, or at least an access token.
 * Did not secure Redis. 
 * Under normal circumstances, the .env and config/database.php files would have been cleansed of user/password data.
 * I used a literal interpretation of your requirements and constrained `orders` by enforcing a unique email address per order.
@@ -61,3 +61,9 @@ _Note_: Redis data will cache during operation, but I randomly choose up to 100 
 * Standardize responses - some duplicate code could be eliminated with a formatResponse() method.
 * Provide modal with order details including line items on the search page.
 * Improve search by allowing search for products. Improve performance.
+* Make landing page responsive. Fold nav into hamburger menu.
+* Bundle view specific JavaScript into separate files so it can load async.
+* Make JavaScript DTOs into proper objects.
+* Create layout views.
+* Implement ability to update selectively (patch) and wholesale (put).
+* More testing!
