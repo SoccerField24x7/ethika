@@ -121,6 +121,62 @@ class ApiController extends BaseController
         return json_encode(['Error' => 'Method Not Implemented']);  // create standardized response object, then return
     }
 
+    public function searchOrders(Request $request)
+    {
+        if (!$request->ajax()) {
+            return json_encode(['Error' => 'Invalid request.']);
+        }
+
+        $where = 0;
+
+        $fname = $request->input('fname');
+        $lname = $request->input('lname');
+        $email = $request->input('email');
+        $product = $request->input('product');
+
+        //$orders = Order::with('order_items')->where('');
+
+        $sql = 'SELECT id FROM public.order WHERE';
+
+        if ($fname != null) {
+            $sql .= " first_name LIKE " . DB::connection()->getPdo()->quote('%' . $fname . '%');
+            $where++;
+        }
+
+        if ($lname != null) {
+            if ($where) {
+                $sql .= " AND";
+            }
+            $sql .= " last_name LIKE " . DB::connection()->getPdo()->quote('%' . $lname . '%');
+            $where++;
+        }
+
+        if ($email != null) {
+            if ($where) {
+                $sql .= " AND";
+            }
+            $sql .= " email LIKE " . DB::connection()->getPdo()->quote('%' . $email . '%');
+            //$where++;
+        }
+
+        try {
+            $result = DB::select($sql);
+
+            $orderNos = [];
+
+            foreach ($result as $row) {
+                $orderNos[] = $row->id;
+            }
+
+            $orders = Order::with('order_items')->whereIn('id', $orderNos)->get();
+        } catch (\Exception $ex) {
+            return json_encode(['Error' => $ex->getMessage()]);
+        }
+
+        return json_encode($orders);
+
+    }
+
     /**
      * Added this for testing with Postman - need to pass/spoof the CSRF key. See routes/api.php for more info
      * @return string
